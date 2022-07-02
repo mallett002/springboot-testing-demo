@@ -1,6 +1,7 @@
 package com.tdd.demo;
 
 import com.tdd.demo.domain.Car;
+import com.tdd.demo.repository.CarRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,13 @@ public class DemoIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private CarRepository repository;
+
     @Test
     public void getCar_returnsCardDetails() throws Exception {
         // given
+        repository.save(new Car("prius", "hybrid"));
 
         // when
         ResponseEntity<Car> response = restTemplate.getForEntity("/cars/prius", Car.class);

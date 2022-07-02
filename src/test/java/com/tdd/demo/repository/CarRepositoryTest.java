@@ -28,4 +28,13 @@ class CarRepositoryTest {
         Assertions.assertThat(car.getName()).isEqualTo(savedCar.getName());
         Assertions.assertThat(car.getType()).isEqualTo(savedCar.getType());
     }
+
+    @Test
+    void save_returnsCarDetails() throws Exception {
+        Car expectedCar = new Car("prius", "hybrid");
+        Car car = repository.save(expectedCar);
+
+        Assertions.assertThat(car.getName()).isEqualTo(expectedCar.getName());
+        Assertions.assertThat(car.getType()).isEqualTo(expectedCar.getType());
+    }
 }
