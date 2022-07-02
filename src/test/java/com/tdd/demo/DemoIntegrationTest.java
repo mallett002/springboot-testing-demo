@@ -7,6 +7,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -33,6 +35,22 @@ public class DemoIntegrationTest {
 
         // then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody().getName()).isEqualTo("prius");
+        assertThat(response.getBody().getType()).isEqualTo("hybrid");
+    }
+
+    @Test
+    public void createCar_returnsCarDetails() {
+        // given
+        Car car = new Car("prius", "hybrid");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Car> request = new HttpEntity<>(car, headers);
+
+        // when
+        ResponseEntity<Car> response = restTemplate.postForEntity("/car", request, Car.class);
+
+        // then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody().getName()).isEqualTo("prius");
         assertThat(response.getBody().getType()).isEqualTo("hybrid");
     }
