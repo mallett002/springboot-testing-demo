@@ -11,6 +11,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 // Unit testing this service without involving Spring
@@ -41,5 +42,16 @@ public class CarServiceTest {
     @Test(expected = CarNotFoundException.class)
     public void getCarDetails_whenCarNotFound() throws Exception {
         carService.getCarDetails("");
+    }
+
+    @Test
+    public void insertCar_returnsCarDetails() throws Exception {
+        Car expectedCar = new Car("prius", "hybrid");
+        given(carRepository.save(any())).willReturn(expectedCar);
+
+        Car result = carService.insertCar(expectedCar);
+
+        assertThat(result.getName()).isEqualTo("prius");
+        assertThat(result.getType()).isEqualTo("hybrid");
     }
 }
